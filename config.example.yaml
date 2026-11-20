@@ -1,0 +1,8 @@
+# Merge this section into the existing CLIProxyAPI configuration.
+plugins:
+  enabled: true
+  dir: "plugins"
+  configs:
+    antigravity-verify:
+      enabled: true
+      priority: 1

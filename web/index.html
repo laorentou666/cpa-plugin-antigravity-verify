@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Antigravity 账号验证</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">ANTIGRAVITY</div>
+      <h1>账号验证</h1>
+      <p>手动查询账号状态，查看并复制需要验证的账号链接。</p>
+    </header>
+    <details id="connection">
+      <summary id="connection-summary">管理密钥</summary>
+      <div class="connection-body">
+        <label for="management-key">管理密钥</label>
+        <input id="management-key" type="password" autocomplete="off" placeholder="填写当前服务的管理密钥">
+        <p class="hint">可复用管理中心记住的密钥；在此填写的密钥仅用于当前页面。</p>
+      </div>
+    </details>
+    <section class="toolbar" aria-label="查询操作">
+      <div class="actions">
+        <button id="query-all" class="primary">查询全部账号</button>
+        <button id="load-accounts">读取账号列表</button>
+        <button id="cancel" hidden>停止查询</button>
+        <select id="api-mode" aria-label="管理接口版本">
+          <option value="auto">自动选择接口</option>
+          <option value="v0">旧接口 v0</option>
+          <option value="v8">新接口 v8</option>
+        </select>
+        <span id="api-current" class="hint" aria-live="polite">当前接口：待识别</span>
+      </div>
+      <p id="progress" class="hint" role="status">点击查询后获取最新状态。</p>
+    </section>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <section class="stats" aria-label="查询结果统计">
+      <div><span id="total">0</span><small>账号</small></div>
+      <div><span id="checked">0</span><small>已查询</small></div>
+      <div class="warning-stat"><span id="pending">0</span><small>需要验证</small></div>
+      <div><span id="errors">0</span><small>其他异常</small></div>
+    </section>
+    <section class="filters" aria-label="结果筛选">
+      <input id="search" type="search" placeholder="搜索账号或文件名" aria-label="搜索账号或文件名">
+      <label><input id="only-pending" type="checkbox">仅看需要验证的账号</label>
+      <button id="copy-all" disabled>复制全部验证链接</button>
+    </section>
+    <div id="accounts" class="accounts"></div>
+    <div id="empty" class="empty">点击“查询全部账号”，或先读取账号列表后逐个查询。</div>
+  </main>
+</body>
+</html>
