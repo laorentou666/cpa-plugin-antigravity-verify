@@ -52,3 +52,7 @@ python3 tests/browser_smoke.py dist/linux/amd64/antigravity-verify.so
 ## 许可证
 
 [MIT](LICENSE)。原生插件接口参考 [CLIProxyAPI 官方示例](https://github.com/router-for-me/CLIProxyAPI/tree/v8.0.78/examples/plugin/management-api)。
+
+---
+
+友情支持：[linux.do](https://linux.do)
