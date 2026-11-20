@@ -1,0 +1,53 @@
+name: Release Linux amd64
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+      - .github/workflows/release.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-linux-amd64
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.10'
+          cache: false
+      - name: Build and check
+        run: |
+          bash build.sh
+          go vet ./...
+          node --test tests/core.test.mjs
+          python3 tests/native_smoke.py dist/linux/amd64/antigravity-verify.so
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          release_tag="$(node -p "'v' + require('./package.json').version")"
+          if gh release view "$release_tag" >/dev/null 2>&1; then
+            echo "Release $release_tag already exists."
+            exit 0
+          fi
+          cat > release-notes.md <<'EOF'
+          Linux amd64 成品插件。
+
+          将 `antigravity-verify.so` 放入 `plugins/linux/amd64/`，按 README 启用插件后重启 CLIProxyAPI。
+          EOF
+          gh release create "$release_tag" \
+            dist/linux/amd64/antigravity-verify.so \
+            --target "$GITHUB_SHA" \
+            --title "$release_tag" \
+            --notes-file release-notes.md
+
